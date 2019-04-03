@@ -1,0 +1,172 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <link rel="icon" th:href="@{css/favicon.ico}" type="image/x-icon"/>
+
+        <link rel="apple-touch-icon" th:href="@{css/apple-touch-icon-iphone-60x60.png}"/>
+        <link rel="apple-touch-icon" sizes="60x60" th:href="@{css/apple-touch-icon-ipad-76x76.png}"/>
+        <link rel="apple-touch-icon" sizes="114x114" th:href="@{css/apple-touch-icon-iphone-retina-120x120.png}"/>
+        <link rel="apple-touch-icon" sizes="144x144" th:href="@{css/apple-touch-icon-ipad-retina-152x152.png}"/>
+
+        <title>Spending</title>
+
+        <!-- Bootstrap Core CSS -->
+        <link th:href="@{css/bootstrap.min.css}" rel="stylesheet" />
+
+        <link th:href="@{css/bootstrap-switch.css}" rel="stylesheet" />
+
+        <link th:href="@{css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+
+        <!-- jQuery Version 1.11.0 -->
+        <script th:src="@{js/jquery-1.11.1.min.js}"></script>
+
+
+
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+    </head>
+    <body>
+        <section layout:fragment="content">
+
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="text-center">Spending Allowance Balance</h1>
+                        <h1 class="text-center" th:text="${allowance}" />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <h2>Details</h2>
+
+
+                        <table class="table table-striped">
+                            <tbody>
+                            <tr>
+                                <td><b>Total Allowance:</b></td>
+                                <td th:text="${totalAllowance}"/>
+                            </tr>
+                            <tr>
+                                <td><b>Amount Spent:</b></td>
+                                <td th:text="${amountSpent}"/>
+                            </tr>
+                            <tr>
+                                <td><b>Next Paycheck Date:</b></td>
+                                <td th:text="${endOfPeriod}"/>
+                            </tr>
+                            <tr>
+                                <td><b>Spending Target Per Day</b></td>
+                                <td th:text="${spendingPerDay}"/>
+                            </tr>
+                            <tr>
+                                <td><b>Days Left in Period</b></td>
+                                <td th:text="${daysLeft}"/>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="login-panel panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Enter Transaction</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form th:action="@{/}" th:object="${trans}" method="post">
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label for="amount">Amount</label>
+                                            <input class="form-control" type="number" min="0.01" step="0.01" name="amount" value="" id="amount" th:field="*{amount}" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label for="note">Note</label>
+                                            <input class="form-control" type="text" name="note" value="" id="note" th:field="*{note}"  maxlength="255" required="required"/>
+                                        </div>
+                                    </div>
+
+                                    <br/>
+
+                                    <div class="row top-buffer">
+                                        <div class="col-sm-12">
+                                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Submit"/>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <h2>Transactions</h2>
+                        <table class="table table-striped">
+
+                            <thead>
+                                <th>Amount</th>
+                                <th>Note</th>
+                                <th>Date</th>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item : ${list}">
+                                    <td th:text="${item.amount}"/>
+                                    <td th:text="${item.note}"/>
+                                    <td th:text="${item.date}"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <br/>
+
+                <div class="row">
+                    <form th:action="@{/reset}" method="post">
+                        <div class="row top-buffer">
+                            <div class="col-sm-6 col-md-offset-3">
+                                <input type="submit" class="btn btn-lg btn-danger btn-block" value="Reset"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script th:src="@{js/bootstrap.min.js}"></script>
+        <script th:src="@{js/bootstrap-switch.js}"></script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script th:src="@{js/plugins/metisMenu/metisMenu.min.js}"></script>
+
+
+
+        <!-- Custom Theme JavaScript -->
+        <script th:src="@{js/sb-admin-2.js}"></script>
+
+
+    </body>
+</html>
